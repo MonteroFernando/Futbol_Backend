@@ -5,12 +5,17 @@ class JugadoresController:
 
     @classmethod
     def create(cls):
-        data=request.json
-        if not 'name' in data:
-            return {'error':'no se encontro el nombre'},400
-        category=Jugadores(**data)
-        Jugadores.create(category)
-        return {'mensaje':'Categoria creada con éxito'},200
+        data = request.json
+        required_fields = ['email', 'password', 'nombre', 'apellido', 'edad', 'nivel_habilidad', 'apodo']
+
+        missing_fields = [field for field in required_fields if field not in data]
+
+        if missing_fields:
+            return {'error': f'Faltan los siguientes campos: {", ".join(missing_fields)}'}, 400
+
+        jugador = Jugadores(**data)
+        Jugadores.create(jugador)
+        return {'mensaje': 'Jugador creado con éxito'}, 200
     @classmethod
     def get_all(cls):
         categories=Jugadores.get_all()

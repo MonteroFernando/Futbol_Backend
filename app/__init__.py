@@ -4,6 +4,8 @@ from config import Config
 from app.db.database import DatabaseConnection
 from app.db.init_database import init_db
 
+from .routes.jugadores_route import jugador_bp
+
 def init_app():
     app = Flask(__name__)
 
@@ -17,6 +19,7 @@ def init_app():
     except Exception as e:
         app.logger.error(f"Error al inicializar la base de datos: {e}")
 
+    app.register_blueprint(jugador_bp,url_prefix='/jugador')
     
 
     return app

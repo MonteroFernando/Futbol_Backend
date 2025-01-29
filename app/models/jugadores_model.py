@@ -1,4 +1,4 @@
-from database import DatabaseConnection
+from app.db.database import DatabaseConnection
 
 class Jugadores:
     _keys=('email','password','nombre','apellido','edad','nivel_habilidad','apodo')
@@ -9,6 +9,7 @@ class Jugadores:
         self.edad=kwargs.get('edad')
         self.nivel_habilidad=kwargs.get('nivel_habilidad')
         self.apodo=kwargs.get('apodo')
+        self.nombre = kwargs.get('nombre')
         
     
     def serialize(self):
@@ -16,9 +17,9 @@ class Jugadores:
     
     @classmethod
     def create(cls,data):
-        query="""INSERT INTO Futbol_Base.jugadores (email,password,apellido,edad,
-        nivel_habilidad, apodo) VALUES (%s,%s,%s,%s,%s,%s)"""
-        params=(data.email,data.password, data.apellido, data.edad, data.nivel_habilidad,
+        query="""INSERT INTO Futbol_Base.jugadores (email,password,nombre,apellido,edad,
+        nivel_habilidad, apodo) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+        params=(data.email,data.password, data.nombre, data.apellido, data.edad, data.nivel_habilidad,
                 data.apodo)
         DatabaseConnection.execute_query(query,params)
     
