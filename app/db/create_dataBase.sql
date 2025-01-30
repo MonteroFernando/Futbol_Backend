@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS Jugadores (
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
     edad INT NOT NULL,
-    nivel_habilidad INT NOT NULL,
+    nivel_habilidad DECIMAL NOT NULL,
     apodo VARCHAR(100)
 );
 
@@ -19,8 +19,9 @@ CREATE TABLE IF NOT EXISTS Equipos (
     Logo VARCHAR(255),
     IDCreador INT NOT NULL,
     EquipoCompleto BOOLEAN NOT NULL,
-    Promedio_Habilidad BOOLEAN,
-    Promedio_Edad BOOLEAN,
+    Promedio_Habilidad DECIMAL(5,2),  -- Promedio de habilidad como DECIMAL
+    Promedio_Edad INT,                -- Promedio de edad como INT
+    CantidadJugadores INT DEFAULT 0,
     FOREIGN KEY (IDCreador) REFERENCES Jugadores(id)
 );
 
@@ -29,6 +30,7 @@ CREATE TABLE IF NOT EXISTS JugadoresEquipos (
     IDEquipo INT NOT NULL,
     Fecha_Ingreso DATETIME NOT NULL,
     EstadoSolicitud VARCHAR(50) NOT NULL,
+    SolicitudCreadaPor ENUM('jugador', 'equipo') NOT NULL,  -- Campo añadido para definir quien hizo la solicitud
     PRIMARY KEY (IDJugador, IDEquipo),
     FOREIGN KEY (IDJugador) REFERENCES Jugadores(id),
     FOREIGN KEY (IDEquipo) REFERENCES Equipos(id)
