@@ -26,12 +26,13 @@ CREATE TABLE IF NOT EXISTS Equipos (
 );
 
 CREATE TABLE IF NOT EXISTS JugadoresEquipos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     IDJugador INT NOT NULL,
     IDEquipo INT NOT NULL,
     Fecha_Ingreso DATETIME NOT NULL,
     EstadoSolicitud VARCHAR(50) NOT NULL,
     SolicitudCreadaPor ENUM('jugador', 'equipo') NOT NULL,  -- Campo añadido para definir quien hizo la solicitud
-    PRIMARY KEY (IDJugador, IDEquipo),
+    UNIQUE (IDJugador, IDEquipo),
     FOREIGN KEY (IDJugador) REFERENCES Jugadores(id),
     FOREIGN KEY (IDEquipo) REFERENCES Equipos(id)
 );

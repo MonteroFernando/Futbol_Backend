@@ -120,6 +120,29 @@ class EquiposController:
         data = request.json
         required_fields = ['IDJugador', 'IDEquipo', 'IDCreador']
         missing_fields = [field for field in required_fields if field not in data]
+
+        if missing_fields:
+            return  {'error': f'Faltan los siguientes campos: {", ".join(missing_fields)}'}, 400
+        
+        equipo = Equipos.get({'id':data['IDEquipo']})
+        jugador = Jugadores.get({'id':data['IDJugador']})
+
+        if jugador is None:
+            return  {'error': 'El jugador ingresado no existe'}, 400
+        
+        if equipo is None:
+            return  {'error': 'El equipo ingresado no existe'}, 400
+        
+        if equipo.IDCreador != data['IDCreador']:
+            return {'error':'El Equipo ingresado no pertenece al jugador'}, 400
+        
+        jugadores_equipos = JugadoresEquipos(IDJugador=data['IDCreador'], IDEquipo=equipo.id,
+                                            Fecha_Ingreso=datetime.now(), EstadoSolicitud="Pendiente",
+                                            SolicitudCreadaPor="equipo")
+        JugadoresEquipos.create(jugadores_equipos)
+        
+        return {'messaje':'Solicitud registrada con éxito'},200
+
         
 
 
