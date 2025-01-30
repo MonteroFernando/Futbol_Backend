@@ -82,13 +82,16 @@ class EquiposController:
         return {'mensaje': 'Equipo eliminado con éxito'}, 200
     
     @classmethod
-    def accept_player():
-        idEquipo = request.args.get('idEquipo')
-        idJugador = request.args.get('idJugador')
-        idCreador = request.args.get('idCreador')
+    def accept_player(cls):
+        data = request.json
+        required_fields = ['IDJugador', 'IDEquipo', 'IDCreador']
+        missing_fields = [field for field in required_fields if field not in data]
 
-        equipo = Equipos.get({'id':idEquipo})
-        jugador = Jugadores.get({'id':idJugador})
+        if missing_fields:
+            return {'error': f'Faltan los siguientes campos: {", ".join(missing_fields)}'}, 400
+
+        equipo = Equipos.get({'id':data['IDEquipo']})
+        jugador = Jugadores.get({'id':data['IDJugador']})
 
         if jugador is None:
             return {'error':'No se encontro el Jugador ingresado'},400
@@ -97,24 +100,26 @@ class EquiposController:
             return {'error':'No se encontro el Equipo ingresado'},400
         
 
-        if equipo.IDCreador != idCreador:
+        if equipo.IDCreador != data ['IDCreador']:
             return {'error':'El usuario no es el creador del equipo'},400
         
-        relation = JugadoresEquipos.get({'idEquipo':idEquipo, 'idJugador':idJugador})
+        relation = JugadoresEquipos.get({'IDEquipo':data['IDEquipo'], 'IDJugador':data['IDJugador']})
 
         if relation is None:
             return {'error':'No existe la relacion ingresada'},400
 
         if relation.SolicitudCreadaPor == 'Jugador':
-            JugadoresEquipos.update({'idEquipo':idEquipo, 'idJugador':idJugador, 'EstadoSolicitud':'Aceptada'})
+            JugadoresEquipos.update({'IDEquipo':data['IDEEquipo'], 'IDJugador':['IDJugador'], 'EstadoSolicitud':'Aceptada'})
             Equipos.update_qty({'NombreEquipo':equipo.NombreEquipo})
             return {'mensaje': 'Se acepto al jugador y se actualizo el valor del equipo'},200
         else:
-            return {'error':'El jugador debe aceptar la invitacion'},400
+            return {'error':'La Solicitud Fue creada por el equipo, el jugador debe aceptar'},400
         
     @classmethod
     def invite_player(cls):
-        pass
+        data = request.json
+        required_fields = ['IDJugador', 'IDEquipo', 'IDCreador']
+        missing_fields = [field for field in required_fields if field not in data]
         
 
 
