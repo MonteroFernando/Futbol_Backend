@@ -44,7 +44,9 @@ class JugadoresEquiposController:
 
     @classmethod
     def get_all(cls):
-        response = JugadoresEquipos.get_all()
+        data = request.json
+        
+        response = JugadoresEquipos.get_all(data)
         return [membership.serialize() for membership in response], 200
 
     @classmethod

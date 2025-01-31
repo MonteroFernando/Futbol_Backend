@@ -37,9 +37,16 @@ class JugadoresEquipos:
             return cls(**dict(zip(cls._keys, response)))
 
     @classmethod
-    def get_all(cls):
-        query = "SELECT IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor FROM Futbol_Base.JugadoresEquipos"
-        response = DatabaseConnection.fetchall(query)
+    def get_all(cls,data):
+        if not data:
+            query = "SELECT IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor FROM Futbol_Base.JugadoresEquipos"
+            response = DatabaseConnection.fetchall(query)
+            
+        else:
+            key = ' AND '.join("{}=%s".format(key) for key in data.keys())
+            query = f"SELECT IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor FROM Futbol_Base.JugadoresEquipos WHERE {key}"    
+            params = tuple(data.values())
+            response = DatabaseConnection.fetchall(query, params)
         return [cls(**dict(zip(cls._keys, row))) for row in response]
 
     @classmethod
