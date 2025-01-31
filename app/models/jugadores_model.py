@@ -53,6 +53,7 @@ class Jugadores:
             return []
         else:
             return [cls(**dict(zip(cls._keys, row))) for row in response]
+        
 
     @classmethod
     def update(cls,data):

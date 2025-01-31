@@ -1,16 +1,20 @@
 from ..models.jugadores_model import Jugadores
+from ..models.equipos_models import Equipos
+from ..models.jugadoresequipos_models import JugadoresEquipos
+from datetime import datetime
 from flask import request
 
 class JugadoresController:
 
     @classmethod
     def create(cls):
+        
         data = request.json
         required_fields = ['email', 'password', 'nombre', 'apellido', 'edad', 'nivel_habilidad', 'apodo']
-        
-        for field in required_fields:
-            if field not in data:
-                return {"error": f"Falta el campo: {field}"}, 400
+        missing_fields = [field for field in required_fields if field not in data]
+
+        if missing_fields:
+            return {'error': f'Faltan los siguientes campos: {", ".join(missing_fields)}'}, 400
         
         try:
             Jugadores.create(data)
@@ -59,3 +63,65 @@ class JugadoresController:
         
         Jugadores.delete(data)
         return {"message": "Jugador eliminado."}, 200
+    
+    @classmethod
+    def accept_invitation(cls):
+        data = request.json
+        required_fields = ['IDJugador', 'IDEquipo']
+        missing_fields = [field for field in required_fields if field not in data]
+
+        if missing_fields:
+            return {'error': f'Faltan los siguientes campos: {", ".join(missing_fields)}'}, 400
+
+        equipo = Equipos.get({'id':data['IDEquipo']})
+        jugador = Jugadores.get({'id':data['IDJugador']})
+
+        if jugador is None:
+            return {'error':'No se encontro el Jugador ingresado'},400
+
+        if equipo is None:
+            return {'error':'No se encontro el Equipo ingresado'},400
+        
+
+                
+        relation = JugadoresEquipos.get({'IDEquipo':data['IDEquipo'], 'IDJugador':data['IDJugador']})
+
+        if relation is None:
+            return {'error':'No existe la relacion ingresada'},400
+
+        if relation.SolicitudCreadaPor == 'Equipo':
+            JugadoresEquipos.update({'IDEquipo':data['IDEEquipo'], 'IDJugador':['IDJugador'], 'EstadoSolicitud':'Aceptada'})
+            Equipos.update_qty({'NombreEquipo':equipo.NombreEquipo})
+            return {'mensaje': 'Se acepto al jugador y se actualizo el valor del equipo'},200
+        else:
+            return {'error':'La Solicitud Fue creada por el jugador, el equipo debe aceptar'},400
+        
+    @classmethod
+    def send_request(cls):
+        data = request.json
+        required_fields = ['IDJugador', 'IDEquipo']
+        missing_fields = [field for field in required_fields if field not in data]
+
+        if missing_fields:
+            return  {'error': f'Faltan los siguientes campos: {", ".join(missing_fields)}'}, 400
+        
+        equipo = Equipos.get({'id':data['IDEquipo']})
+        jugador = Jugadores.get({'id':data['IDJugador']})
+
+        if jugador is None:
+            return  {'error': 'El jugador ingresado no existe'}, 400
+        
+        if equipo is None:
+            return  {'error': 'El equipo ingresado no existe'}, 400
+        
+        relation = JugadoresEquipos.get({'IDEquipo':data['IDEquipo'], 'IDJugador':data['IDJugador']})
+
+        if relation:
+            return {'error':'Ya existe la relacion ingresada'},400
+        
+        jugadores_equipos = JugadoresEquipos(IDJugador=data['IDJugador'], IDEquipo=equipo.id,
+                                            Fecha_Ingreso=datetime.now(), EstadoSolicitud="Pendiente",
+                                            SolicitudCreadaPor="jugador")
+        JugadoresEquipos.create(jugadores_equipos)
+        
+        return {'messaje':'Solicitud registrada con éxito'},200

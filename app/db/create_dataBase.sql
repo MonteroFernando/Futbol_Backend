@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS JugadoresEquipos (
     Fecha_Ingreso DATETIME NOT NULL,
     EstadoSolicitud VARCHAR(50) NOT NULL,
     SolicitudCreadaPor ENUM('jugador', 'equipo') NOT NULL,  -- Campo añadido para definir quien hizo la solicitud
-    UNIQUE (IDJugador, IDEquipo),
     FOREIGN KEY (IDJugador) REFERENCES Jugadores(id),
     FOREIGN KEY (IDEquipo) REFERENCES Equipos(id)
 );
