@@ -85,12 +85,12 @@ class JugadoresController:
 
                 
         relation = JugadoresEquipos.get({'IDEquipo':data['IDEquipo'], 'IDJugador':data['IDJugador']})
-
+        
         if relation is None:
             return {'error':'No existe la relacion ingresada'},400
 
-        if relation.SolicitudCreadaPor == 'Equipo':
-            JugadoresEquipos.update({'IDEquipo':data['IDEEquipo'], 'IDJugador':['IDJugador'], 'EstadoSolicitud':'Aceptada'})
+        if relation.SolicitudCreadaPor == 'equipo':
+            JugadoresEquipos.update({'IDEquipo':data['IDEquipo'], 'IDJugador':data['IDJugador'], 'EstadoSolicitud':'Aceptada'})
             Equipos.update_qty({'NombreEquipo':equipo.NombreEquipo})
             return {'mensaje': 'Se acepto al jugador y se actualizo el valor del equipo'},200
         else:

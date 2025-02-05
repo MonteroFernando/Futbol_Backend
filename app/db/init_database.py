@@ -4,6 +4,9 @@ import os
 
 def init_db(file_name,database_name):
 
+    if database_name =='test_db':
+        DatabaseConnection.execute_query("DROP DATABASE IF EXISTS test_db")
+
     request = DatabaseConnection.fetchone(f"SHOW DATABASES LIKE '{database_name}';")
 
     if request is None:

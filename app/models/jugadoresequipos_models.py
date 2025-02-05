@@ -51,7 +51,7 @@ class JugadoresEquipos:
 
     @classmethod
     def update(cls, data):
-        key = ' ,'.join("{}=%s".format(key) for key in data.keys() if key != 'IDJugador' and key != 'IDEquipo')
+        key = ', '.join("{}=%s".format(key) for key in data.keys() if key != 'IDJugador' and key != 'IDEquipo')
         query = f"UPDATE JugadoresEquipos SET {key} WHERE IDJugador=%s AND IDEquipo=%s"
         params = tuple(value for k, value in data.items() if k != 'IDJugador' and k != 'IDEquipo') + (data['IDJugador'], data['IDEquipo'])
         DatabaseConnection.execute_query(query, params)
