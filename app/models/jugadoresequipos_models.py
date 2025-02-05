@@ -15,7 +15,7 @@ class JugadoresEquipos:
 
     @classmethod
     def create(cls, data):
-        query = """INSERT INTO Futbol_Base.JugadoresEquipos (IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor) 
+        query = """INSERT INTO JugadoresEquipos (IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor) 
                    VALUES (%s, %s, %s, %s, %s)"""
         params = (data.IDJugador, data.IDEquipo, data.Fecha_Ingreso, data.EstadoSolicitud, data.SolicitudCreadaPor)
         DatabaseConnection.execute_query(query, params)
@@ -27,7 +27,7 @@ class JugadoresEquipos:
         
         conditions = ' AND '.join(f"{key}=%s" for key in data)
 
-        query = f"SELECT IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor FROM Futbol_Base.JugadoresEquipos WHERE {conditions}"
+        query = f"SELECT IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor FROM JugadoresEquipos WHERE {conditions}"
         params = tuple(data.values())
         
         response = DatabaseConnection.fetchone(query, params)
@@ -39,12 +39,12 @@ class JugadoresEquipos:
     @classmethod
     def get_all(cls,data):
         if not data:
-            query = "SELECT IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor FROM Futbol_Base.JugadoresEquipos"
+            query = "SELECT IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor FROM JugadoresEquipos"
             response = DatabaseConnection.fetchall(query)
             
         else:
             key = ' AND '.join("{}=%s".format(key) for key in data.keys())
-            query = f"SELECT IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor FROM Futbol_Base.JugadoresEquipos WHERE {key}"    
+            query = f"SELECT IDJugador, IDEquipo, Fecha_Ingreso, EstadoSolicitud, SolicitudCreadaPor FROM JugadoresEquipos WHERE {key}"    
             params = tuple(data.values())
             response = DatabaseConnection.fetchall(query, params)
         return [cls(**dict(zip(cls._keys, row))) for row in response]
@@ -52,12 +52,12 @@ class JugadoresEquipos:
     @classmethod
     def update(cls, data):
         key = ' ,'.join("{}=%s".format(key) for key in data.keys() if key != 'IDJugador' and key != 'IDEquipo')
-        query = f"UPDATE Futbol_Base.JugadoresEquipos SET {key} WHERE IDJugador=%s AND IDEquipo=%s"
+        query = f"UPDATE JugadoresEquipos SET {key} WHERE IDJugador=%s AND IDEquipo=%s"
         params = tuple(value for k, value in data.items() if k != 'IDJugador' and k != 'IDEquipo') + (data['IDJugador'], data['IDEquipo'])
         DatabaseConnection.execute_query(query, params)
 
     @classmethod
     def delete(cls, data):
-        query = "DELETE FROM Futbol_Base.JugadoresEquipos WHERE IDJugador=%s AND IDEquipo=%s"
+        query = "DELETE FROM JugadoresEquipos WHERE IDJugador=%s AND IDEquipo=%s"
         params = (data['IDJugador'], data['IDEquipo'])
         DatabaseConnection.execute_query(query, params)

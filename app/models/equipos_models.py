@@ -18,7 +18,7 @@ class Equipos:
 
     @classmethod
     def create(cls, data):
-        query = """INSERT INTO Futbol_Base.Equipos (NombreEquipo, Logo, IDCreador, EquipoCompleto, Promedio_Habilidad, Promedio_Edad, CantidadJugadores) 
+        query = """INSERT INTO Equipos (NombreEquipo, Logo, IDCreador, EquipoCompleto, Promedio_Habilidad, Promedio_Edad, CantidadJugadores) 
                    VALUES (%s, %s, %s, %s, %s, %s, %s)"""
         params = (
                     data.NombreEquipo, data.Logo, data.IDCreador, data.EquipoCompleto,
@@ -32,7 +32,7 @@ class Equipos:
             raise ValueError("Se requiere al menos un campo para la búsqueda.")
 
         conditions = ' AND '.join(f"{key}=%s" for key in data)
-        query = f"SELECT {', '.join(cls._keys)} FROM Futbol_Base.Equipos WHERE {conditions}"
+        query = f"SELECT {', '.join(cls._keys)} FROM Equipos WHERE {conditions}"
         params = tuple(data.values())
 
         response = DatabaseConnection.fetchone(query, params)
@@ -42,7 +42,7 @@ class Equipos:
 
     @classmethod
     def get_all(cls):
-        query = "SELECT id, NombreEquipo, Logo, IDCreador, EquipoCompleto, Promedio_Habilidad, Promedio_Edad, CantidadJugadores FROM Futbol_Base.Equipos"
+        query = "SELECT id, NombreEquipo, Logo, IDCreador, EquipoCompleto, Promedio_Habilidad, Promedio_Edad, CantidadJugadores FROM Equipos"
         response = DatabaseConnection.fetchall(query)
         return [cls(**dict(zip(cls._keys, row))) for row in response]
 
@@ -52,14 +52,14 @@ class Equipos:
             raise ValueError("Se requiere NombreEquipo para actualizar.")
 
         key_values = ', '.join(f"{key}=%s" for key in data if key != 'NombreEquipo')
-        query = f"UPDATE Futbol_Base.Equipos SET {key_values} WHERE NombreEquipo=%s"
+        query = f"UPDATE Equipos SET {key_values} WHERE NombreEquipo=%s"
 
         params = tuple(data[key] for key in data if key != 'NombreEquipo') + (data['NombreEquipo'],)
         DatabaseConnection.execute_query(query, params)
 
     @classmethod
     def delete(cls, data):
-        query = "DELETE FROM Futbol_Base.Equipos WHERE NombreEquipo=%s"
+        query = "DELETE FROM Equipos WHERE NombreEquipo=%s"
         params = (data['NombreEquipo'],)
         DatabaseConnection.execute_query(query, params)
 
@@ -69,9 +69,9 @@ class Equipos:
 
         queryprom = """SELECT COUNT(J.id) AS CantidadJugadores, AVG(J.edad) AS PromedioEdad,
                         AVG(J.nivel_habilidad) AS PromedioHabilidad
-                        FROM Futbol_Base.Equipos E
-                        JOIN Futbol_Base.JugadoresEquipos JE ON E.id = JE.IDEquipo
-                        JOIN Futbol_Base.Jugadores J ON JE.IDJugador = J.id
+                        FROM Equipos E
+                        JOIN JugadoresEquipos JE ON E.id = JE.IDEquipo
+                        JOIN Jugadores J ON JE.IDJugador = J.id
                         WHERE E.id = %s AND JE.EstadoSolicitud = 'Aceptada'
                         GROUP BY E.id;"""
         

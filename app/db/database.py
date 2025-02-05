@@ -12,6 +12,7 @@ class DatabaseConnection:
                     password = cls._config['DATABASE_PASSWORD'],
                     port = cls._config['DATABASE_PORT'],
                     host = cls._config['DATABASE_HOST'],
+                    database=cls._config['DATABASE_NAME']
                 )
         return cls._connection
     

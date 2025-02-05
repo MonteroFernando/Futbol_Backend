@@ -18,3 +18,8 @@ class Config:
     if not SECRET_KEY:
         raise ValueError("SECRET_KEY is missing from .env")
     
+class TestingConfig(Config):
+    DEBUG = False  
+    TESTING = True  
+    DATABASE_NAME = "test_db"  # Base de datos de pruebas
+    

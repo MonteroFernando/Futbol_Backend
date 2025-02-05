@@ -1,0 +1,78 @@
+Listado de rutas de carpetas
+El n�mero de serie del volumen es 0BD8-0764
+D:.
+|   .env
+|   .gitignore
+|   config.py
+|   estructura.txt
+|   requirements.txt
+|   run.py
+|   __init__.py
++---app
+|   |   __init__.py
+|   |   
+|   +---controllers
+|   |   |   equipos_controller.py
+|   |   |   jugadoresequipos_controller.py
+|   |   |   jugadores_controller.py
+|   |   |   partidos_controller.py
+|   |   |   
+|   |   \---__pycache__
+|   |           equipos_controller.cpython-311.pyc
+|   |           jugadoresequipos_controller.cpython-311.pyc
+|   |           jugadores_controller.cpython-311.pyc
+|   |           partidos_controller.cpython-311.pyc
+|   |           
+|   +---db
+|   |   |   create_dataBase.sql
+|   |   |   create_dbTest.sql
+|   |   |   database.py
+|   |   |   init_database.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           database.cpython-311.pyc
+|   |           init_database.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   +---models
+|   |   |   equipos_models.py
+|   |   |   jugadoresequipos_models.py
+|   |   |   jugadores_model.py
+|   |   |   partidos_models.py
+|   |   |   
+|   |   \---__pycache__
+|   |           equipos_models.cpython-311.pyc
+|   |           jugadoresequipos_models.cpython-311.pyc
+|   |           jugadores_model.cpython-311.pyc
+|   |           partidos_models.cpython-311.pyc
+|   |           
+|   +---routes
+|   |   |   equipos_route.py
+|   |   |   jugadoresequipos_route.py
+|   |   |   jugadores_route.py
+|   |   |   partidos_routes.py
+|   |   |   
+|   |   \---__pycache__
+|   |           equipos_route.cpython-311.pyc
+|   |           jugadoresequipos_route.cpython-311.pyc
+|   |           jugadores_route.cpython-311.pyc
+|   |           partidos_routes.cpython-311.pyc
+|   |           
+|   +---testing
+|   |   |   test_conection.py
+|   |   |   test_jugadores.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           test_conection.cpython-311-pytest-8.3.4.pyc
+|   |           test_juagdores.cpython-311-pytest-8.3.4.pyc
+|   |           test_jugadores.cpython-311-pytest-8.3.4.pyc
+|   |           
+|   \---__pycache__
+|           __init__.cpython-311.pyc
+|           
+\---__pycache__
+        config.cpython-311.pyc
+        __init__.cpython-311.pyc
+        
